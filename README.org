@@ -1,5 +1,5 @@
 * see.el
-SSE client library for emacs, built on =url-retrieve=
+[[https://en.wikipedia.org/wiki/Server-sent_events][Server sent event]] client (Like JS's [[https://developer.mozilla.org/en-US/docs/Web/API/EventSource][EventSource]]) library for emacs, built on =url-retrieve=.
 ** Example
 #+BEGIN_SRC emacs-lisp
   (setq sse-buff
