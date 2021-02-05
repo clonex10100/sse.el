@@ -38,16 +38,16 @@
 (defvar-local sse--retry 3000
   "Time in milliseconds to wait before trying to reopen closed SSE connection.")
 (defvar-local sse--url nil
-  "Url SSE buffer's stream.")
+  "Url for SSE buffer's stream.")
 (defvar-local sse--last-id nil
   "Id of last SSE recieved.")
 (defvar-local sse--retrieval-buff nil
   "`url-retrieve' buffer for this SSE buffer.")
 
 (defvar-local sse--buff nil
-  "SSE buffer for this `url-retrieve' buffer.")
-(defvar-local sse--start nil
-  "Marker for start of new region.")
+  "SSE buffer for associated with current `url-retrieve' buffer.")
+(defvar-local sse--read-point nil
+  "Point marking the end of copied region in `url-retrieve' buffer.")
 
 (defconst sse-delim-regex ".\\(\\(\r\r\\)\\|\\(\n\n\\)\\|\\(\r\n\r\n\\)\\)"
   "Regex to delimit SSEs.")
@@ -73,7 +73,6 @@ Return nil if it's a comment or can't be parsed."
 (defun sse--parse (sse-string)
   "Parse SSE-STRING into an alist.
 Return nil if it can't be parsed."
-  ;; Strip leading and trailing newlines
   (let ((sse-string (sse--strip-outer-newlines sse-string)))
     (if (= (length sse-string) 0) nil
       (delq nil
@@ -145,8 +144,8 @@ Return nil if it can't be parsed."
            (retrieval-buff (url-retrieve sse--url callback)))
       (setq sse--retrieval-buff retrieval-buff)
       (with-current-buffer retrieval-buff
-        (setq-local sse--buff sse-buff)
-        (setq-local sse--start (point-min))))))
+        (setq sse--buff sse-buff)
+        (setq sse--read-point (point-min))))))
 
 (defun sse-listener (url callback)
   "Listen to URL for SSEs, calling CALLBACK on each one.
@@ -159,9 +158,9 @@ Uses `url-retrive' internally."
   "Copy new data from PROC's buff to `sse--buff', if it exists."
   (when (process-buffer proc)
     (with-current-buffer (process-buffer proc)
-      (when (boundp 'sse--buff)
-        (let ((data (prog1 (buffer-substring sse--start (point-max))
-                      (setq sse--start (point-max-marker)))))
+      (when sse--buff
+        (let ((data (prog1 (buffer-substring sse--read-point (point-max))
+                      (setq sse--read-point (point-max-marker)))))
           (with-current-buffer sse--buff
             (save-excursion
               (goto-char (point-max))
