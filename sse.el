@@ -2,6 +2,7 @@
 
 ;; Author: Noah Evans <noah@nevans.me>
 ;; Version: 1.0
+;; Package-Requires: ((emacs "26.1"))
 ;; Homepage: https://github.com/clonex10100/sse.el
 
 ;; This file is not part of GNU Emacs
