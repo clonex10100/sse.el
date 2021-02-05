@@ -137,7 +137,7 @@ Return nil if it can't be parsed."
   (with-current-buffer sse-buff
     (let* ((url-request-method "GET")
            (url-request-extra-headers
-            `(("Cache-Control" . "no-cache") 
+            `(("Cache-Control" . "no-cache")
               ,@(when sse--last-id
                   `(("Last-Event-ID" . ,sse--last-id)))))
            (callback (sse--make-closed-callback sse-buff))
