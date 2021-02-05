@@ -25,6 +25,14 @@
 ;; Library to listen for SSEs.  Uses `url-retrieve', so if your stream
 ;; needs cookies they must be in its list.
 
+;; Example usage:
+;; (setq sse-buff
+;;       (sse-listener "https://example.com/stream"
+;;                     (lambda (sse)
+;;                       (message "SSE recieved: %s" sse))))
+;; When finished
+;; (kill-buffer sse-buff)
+
 ;;; Code:
 
 (require 'url)
@@ -149,6 +157,7 @@ Return nil if it can't be parsed."
 
 (defun sse-listener (url callback)
   "Listen to URL for SSEs, calling CALLBACK on each one.
+Returns a buffer that you should kill when you are done with the stream.
 Uses `url-retrive' internally."
   (let ((sse-buff (sse--make-sse-buff url callback)))
     (sse--start-retrieve sse-buff)
