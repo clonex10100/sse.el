@@ -2,8 +2,12 @@
 SSE client library for emacs, built on =url-retrieve=
 ** Example
 #+BEGIN_SRC emacs-lisp
-  (sse-listener "https://example.com/stream"
-                (lambda (sse)
-                  (message "SSE recieved: %s" sse)))
+  (setq sse-buff
+        (sse-listener "https://example.com/stream"
+                      (lambda (sse)
+                        (message "SSE recieved: %s" sse))))
+
+  ;; When finished
+  (kill-buffer sse-buff)
 #+END_SRC
 

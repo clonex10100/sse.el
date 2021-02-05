@@ -1,6 +1,8 @@
 ;;; sse.el --- SSE client library -*- lexical-binding: t; -*-
 
 ;; Author: Noah Evans <noah@nevans.me>
+;; Version: 1.0
+;; Homepage: https://github.com/clonex10100/sse.el
 
 ;; This file is not part of GNU Emacs
 
@@ -19,8 +21,8 @@
 
 ;;; Commentary:
 
-;; Code to listen for SSEs.  Uses `url-retrieve', so if your stream
-;; needs cookies they must be in it's list.
+;; Library to listen for SSEs.  Uses `url-retrieve', so if your stream
+;; needs cookies they must be in its list.
 
 ;;; Code:
 
